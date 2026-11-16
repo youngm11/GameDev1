@@ -45,20 +45,20 @@ public class SimpleStateMachine : MonoBehaviour
         //Change Color
         player_controller.rend.material.color = Color.darkGreen;
 
-        //Air State
-        if (player_controller.jump)
-        {
-            player_controller.y_velocity = player_controller.jump_impulse;
-            current_state = States.Air;
-            return;
-        }
-
 
         #region State Changes
         //Ground States
         if(player_controller.direction != Vector2.zero)
         {
             current_state = States.Ground;
+            return;
+        }
+
+        //Air State
+        if (player_controller.jump)
+        {
+            player_controller.y_velocity = player_controller.jump_impulse;
+            current_state = States.Air;
             return;
         }
         #endregion

@@ -29,7 +29,7 @@ public class CubeScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
             timer.SetPause(true);
-        if (Input.GetKeyDown(KeyCode.X)) ;
+        if (Input.GetKeyDown(KeyCode.X))
         timer.SetPause(false);
 
         if (timer.IsFinished())
