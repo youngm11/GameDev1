@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 
     //Components
     [HideInInspector] public CharacterController controller;
-    [HideInInspector] public MeshRenderer rend;
+    //[HideInInspector] public MeshRenderer rend;
 
     //Movement Variables
     public float speed = 5;
@@ -31,11 +31,11 @@ public class PlayerController : MonoBehaviour
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected void Start()
     {
         //Get Components.
         controller = GetComponent<CharacterController>();
-        rend = GetComponent<MeshRenderer>();
+        //rend = GetComponent<MeshRenderer>();
 
         //Get Inputs
         move_action = InputSystem.actions.FindAction("Move");
@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         //Read Input
         direction = move_action.ReadValue<Vector2>();

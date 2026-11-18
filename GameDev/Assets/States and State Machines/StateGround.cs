@@ -6,7 +6,7 @@ public class StateGround : PlayerState
     public override void Enter(StateMachine state_machine)
     {
         //Change Color
-        player_controller.rend.material.color = Color.green;
+        //player_controller.rend.material.color = Color.green;
     }
     public override void Exit(StateMachine state_machine)
     {

@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class FirstPersonController : PlayerController
+public class FirstPersonControllerState : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    /*void Start()
+    void Start()
     {
         
     }
@@ -12,5 +12,5 @@ public class FirstPersonController : PlayerController
     void Update()
     {
         
-    }*/
+    }
 }

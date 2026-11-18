@@ -6,7 +6,7 @@ public class StateAir : PlayerState
     public override void Enter(StateMachine state_machine)
     {
         //Change Color
-        player_controller.rend.material.color = Color.blue;
+        //player_controller.rend.material.color = Color.blue;
     }
     public override void Exit(StateMachine state_machine)
     {

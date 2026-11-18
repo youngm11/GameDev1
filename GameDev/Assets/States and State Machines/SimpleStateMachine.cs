@@ -43,7 +43,7 @@ public class SimpleStateMachine : MonoBehaviour
     private void IdleState()
     {
         //Change Color
-        player_controller.rend.material.color = Color.darkGreen;
+        //player_controller.rend.material.color = Color.darkGreen;
 
 
         #region State Changes
@@ -67,7 +67,7 @@ public class SimpleStateMachine : MonoBehaviour
     private void GroundState()
     {
         //Change Color
-        player_controller.rend.material.color = Color.green;
+        //player_controller.rend.material.color = Color.green;
 
         //Accelerate
         player_controller.xz_velocity += player_controller.direction 
@@ -130,7 +130,7 @@ public class SimpleStateMachine : MonoBehaviour
     private void AirState()
     {
         //Change Color
-        player_controller.rend.material.color = Color.blue;
+        //player_controller.rend.material.color = Color.blue;
 
         //Accelerate
         player_controller.xz_velocity += player_controller.direction

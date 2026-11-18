@@ -6,7 +6,7 @@ public class StateIdle : PlayerState
     public override void Enter(StateMachine state_machine)
     {
         //Change Color
-        player_controller.rend.material.color = Color.darkGreen;
+        //player_controller.rend.material.color = Color.darkGreen;
     }
     public override void Exit(StateMachine state_machine)
     {
