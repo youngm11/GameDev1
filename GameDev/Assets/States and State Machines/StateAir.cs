@@ -1,12 +1,11 @@
 using UnityEngine;
-using static UnityEditor.VersionControl.Asset;
 
-public class StateAir : PlayerState
+public class StateAir : FirstPersonControllerState
 {
     public override void Enter(StateMachine state_machine)
     {
         //Change Color
-        //player_controller.rend.material.color = Color.blue;
+        //fp_controller.rend.material.color = Color.blue;
     }
     public override void Exit(StateMachine state_machine)
     {
@@ -19,32 +18,33 @@ public class StateAir : PlayerState
     public override void StateFixedUpdate(StateMachine state_machine)
     {
         //Accelerate
-        player_controller.xz_velocity += player_controller.direction
-                                        * player_controller.acceleration
-                                        * Time.fixedDeltaTime;
-        player_controller.xz_velocity = Vector2.ClampMagnitude(player_controller.xz_velocity,
-                                                               player_controller.speed);
+        Vector3 accel_vec = fp_controller.acceleration * (transform.right * fp_controller.direction.x + transform.forward * fp_controller.direction.y);
+
+        fp_controller.xz_velocity += new Vector2(accel_vec.x, accel_vec.z);
+
+        fp_controller.xz_velocity = Vector2.ClampMagnitude(fp_controller.xz_velocity,
+                                                               fp_controller.speed);
         //Gravity
-        player_controller.y_velocity -= player_controller.gravity * Time.fixedDeltaTime;
+        fp_controller.y_velocity -= fp_controller.gravity * Time.fixedDeltaTime;
 
         //Construct Velocity
-        player_controller.velocity = new Vector3(player_controller.xz_velocity.x,
-                                                 player_controller.y_velocity,
-                                                 player_controller.xz_velocity.y);
+        fp_controller.velocity = new Vector3(fp_controller.xz_velocity.x,
+                                                 fp_controller.y_velocity,
+                                                 fp_controller.xz_velocity.y);
 
         //Move
-        player_controller.controller.Move(player_controller.velocity * Time.fixedDeltaTime);
+        fp_controller.controller.Move(fp_controller.velocity * Time.fixedDeltaTime);
 
         //Sync velocities after the move
-        player_controller.velocity = player_controller.controller.velocity;
-        player_controller.xz_velocity = new Vector3(player_controller.controller.velocity.x, player_controller.controller.velocity.z);
-        player_controller.y_velocity = player_controller.controller.velocity.y;
+        fp_controller.velocity = fp_controller.controller.velocity;
+        fp_controller.xz_velocity = new Vector3(fp_controller.controller.velocity.x, fp_controller.controller.velocity.z);
+        fp_controller.y_velocity = fp_controller.controller.velocity.y;
 
 
         #region State Changes
-        if (player_controller.controller.isGrounded)
+        if (fp_controller.controller.isGrounded)
         {
-            if (player_controller.xz_velocity == Vector2.zero)
+            if (fp_controller.xz_velocity == Vector2.zero)
                 state_machine.TransitionToState(state_machine.states[0]);
             else
                 state_machine.TransitionToState(state_machine.states[1]);

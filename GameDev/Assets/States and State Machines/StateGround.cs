@@ -1,12 +1,11 @@
 using UnityEngine;
-using static UnityEditor.VersionControl.Asset;
 
-public class StateGround : PlayerState
+public class StateGround : FirstPersonControllerState
 {
     public override void Enter(StateMachine state_machine)
     {
         //Change Color
-        //player_controller.rend.material.color = Color.green;
+        //fp_controller.rend.material.color = Color.green;
     }
     public override void Exit(StateMachine state_machine)
     {
@@ -19,39 +18,40 @@ public class StateGround : PlayerState
     public override void StateFixedUpdate(StateMachine state_machine)
     {
         //Accelerate
-        player_controller.xz_velocity += player_controller.direction
-                                        * player_controller.acceleration
-                                        * Time.fixedDeltaTime;
-        player_controller.xz_velocity = Vector2.ClampMagnitude(player_controller.xz_velocity,
-                                                               player_controller.speed);
+        Vector3 accel_vec = fp_controller.acceleration * (transform.right * fp_controller.direction.x + transform.forward * fp_controller.direction.y);
+
+        fp_controller.xz_velocity += new Vector2(accel_vec.x, accel_vec.z);
+
+        fp_controller.xz_velocity = Vector2.ClampMagnitude(fp_controller.xz_velocity,
+                                                               fp_controller.speed);
 
         //Friction
-        if (player_controller.direction == Vector2.zero)
+        if (fp_controller.direction == Vector2.zero)
         {
-            player_controller.xz_velocity = Vector2.MoveTowards(player_controller.xz_velocity,
+            fp_controller.xz_velocity = Vector2.MoveTowards(fp_controller.xz_velocity,
                                             Vector2.zero,
-                                            player_controller.friction * Time.fixedDeltaTime);
+                                            fp_controller.friction * Time.fixedDeltaTime);
         }
 
 
         //Construct Velocity
-        player_controller.velocity = new Vector3(player_controller.xz_velocity.x,
-                                                 -player_controller.gravity,
-                                                 player_controller.xz_velocity.y);
+        fp_controller.velocity = new Vector3(fp_controller.xz_velocity.x,
+                                                 -fp_controller.gravity,
+                                                 fp_controller.xz_velocity.y);
 
         //Move
-        player_controller.controller.Move(player_controller.velocity * Time.fixedDeltaTime);
+        fp_controller.controller.Move(fp_controller.velocity * Time.fixedDeltaTime);
 
         //Sync velocities after the move
-        player_controller.velocity = player_controller.controller.velocity;
-        player_controller.xz_velocity = new Vector3(player_controller.controller.velocity.x, player_controller.controller.velocity.z);
+        fp_controller.velocity = fp_controller.controller.velocity;
+        fp_controller.xz_velocity = new Vector3(fp_controller.controller.velocity.x, fp_controller.controller.velocity.z);
 
 
         #region State Changes
         //Idle States
-        if (player_controller.controller.velocity == Vector3.zero)
+        if (fp_controller.controller.velocity == Vector3.zero)
         {
-            if (player_controller.direction == Vector2.zero)
+            if (fp_controller.direction == Vector2.zero)
             {
                 state_machine.TransitionToState(state_machine.states[0]);
                 return;
@@ -60,15 +60,15 @@ public class StateGround : PlayerState
         }
         //Air State
         //Pressing the space bar
-        if (player_controller.jump && player_controller.controller.isGrounded)
+        if (fp_controller.jump && fp_controller.controller.isGrounded)
         {
-            player_controller.y_velocity = player_controller.jump_impulse;
+            fp_controller.y_velocity = fp_controller.jump_impulse;
             state_machine.TransitionToState(state_machine.states[2]);
             return;
         }
 
         //Walking off of a ledge
-        if (!player_controller.controller.isGrounded)
+        if (!fp_controller.controller.isGrounded)
         {
             state_machine.TransitionToState(state_machine.states[2]);
             return;
